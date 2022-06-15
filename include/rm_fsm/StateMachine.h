@@ -115,7 +115,7 @@ protected:
     context_.dbusUpdate(*dbus_data);
   }
 
-  void leftRadarCB(const rm_msgs::TfRadarDataConstPtr &radar_data) {
+  void leftRadarCB(const rm_msgs::TofRadarDataConstPtr &radar_data) {
     if (radar_data->distance < safety_distance_ && auto_linear_x_ > 0) {
       context_.radarUpdate();
       last_time_ = ros::Time::now();
@@ -123,7 +123,7 @@ protected:
     }
   }
 
-  void rightRadarCB(const rm_msgs::TfRadarDataConstPtr &radar_data) {
+  void rightRadarCB(const rm_msgs::TofRadarDataConstPtr &radar_data) {
     if (radar_data->distance < safety_distance_ && auto_linear_x_ < 0) {
       context_.radarUpdate();
       last_time_ = ros::Time::now();

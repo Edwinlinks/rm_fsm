@@ -49,11 +49,11 @@ StateMachine::StateMachine(ros::NodeHandle &nh)
   }
   dbus_sub_ = nh.subscribe<rm_msgs::DbusData>("/dbus_data", 10,
                                               &StateMachine::dbusCB, this);
-  left_radar_sub_ = nh.subscribe<rm_msgs::TfRadarData>(
-      "/controllers/tf_radar_controller/left_tf_radar/data", 10,
+  left_radar_sub_ = nh.subscribe<rm_msgs::TofRadarData>(
+      "/controllers/tof_radar_controller/left_tof_radar/data", 10,
       &StateMachine::leftRadarCB, this);
-  right_radar_sub_ = nh.subscribe<rm_msgs::TfRadarData>(
-      "/controllers/tf_radar_controller/right_tf_radar/data", 10,
+  right_radar_sub_ = nh.subscribe<rm_msgs::TofRadarData>(
+      "/controllers/tof_radar_controller/right_tof_radar/data", 10,
       &StateMachine::rightRadarCB, this);
   controller_manager_.startStateControllers();
   context_.enterStartState();

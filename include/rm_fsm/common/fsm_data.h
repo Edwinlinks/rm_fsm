@@ -44,10 +44,15 @@ public:
 
   void robotStatusCallback(const rm_msgs::GameRobotStatusConstPtr &data) {
     game_robot_status_ = *data;
+    referee_.referee_data_.game_robot_status_.chassis_power_limit_ =
+        data->chassis_power_limit_;
+    referee_.referee_data_.game_robot_status_.robot_id_ = data->robot_id_;
   }
 
   void gameStatusCallback(const rm_msgs::GameStatus::ConstPtr &data) {
     game_status_ = *data;
+    referee_.referee_data_.game_status_.game_progress_ = data->game_progress_;
+    referee_.referee_data_.game_status_.game_type_ = data->game_type_;
   }
 
   sensor_msgs::JointState joint_state_;

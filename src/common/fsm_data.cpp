@@ -22,7 +22,7 @@ FsmData::FsmData() {
       "/controllers/upper_gimbal_controller/error_des", 10,
       &FsmData::upperGimbalDesErrorCallback, this);
   game_robot_status_sub_ = nh_.subscribe<rm_msgs::GameRobotStatus>(
-      "/game_robot_status", 10, &FsmData::robotGameStatusCallback, this);
+      "/game_robot_status", 10, &FsmData::robotStatusCallback, this);
   game_status_sub_ = nh_.subscribe<rm_msgs::GameStatus>(
       "/game_status", 10, &FsmData::gameStatusCallback, this);
 }

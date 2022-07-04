@@ -35,14 +35,14 @@ StateMachine::StateMachine(ros::NodeHandle &nh)
   vel_2d_cmd_sender_ = new rm_common::Vel2DCommandSender(vel_nh);
   ros::NodeHandle lower_nh(nh, "lower");
   ros::NodeHandle upper_nh(nh, "upper");
-  lower_cmd_sender_ =
-      new SideCommandSender(lower_nh, fsm_data_.referee_.referee_data_,
-                            fsm_data_.lower_gimbal_des_error_,
-                            fsm_data_.lower_yaw_, fsm_data_.lower_pitch_);
-  upper_cmd_sender_ =
-      new SideCommandSender(upper_nh, fsm_data_.referee_.referee_data_,
-                            fsm_data_.upper_gimbal_des_error_,
-                            fsm_data_.upper_yaw_, fsm_data_.upper_pitch_);
+  lower_cmd_sender_ = new SideCommandSender(
+      lower_nh, fsm_data_.referee_.referee_data_,
+      fsm_data_.lower_gimbal_des_error_, fsm_data_.lower_yaw_,
+      fsm_data_.lower_pitch_, fsm_data_.lower_track_data_);
+  upper_cmd_sender_ = new SideCommandSender(
+      upper_nh, fsm_data_.referee_.referee_data_,
+      fsm_data_.upper_gimbal_des_error_, fsm_data_.upper_yaw_,
+      fsm_data_.upper_pitch_, fsm_data_.upper_track_data_);
   ros::NodeHandle auto_nh(nh, "auto");
   if (!auto_nh.getParam("auto_linear_x", auto_linear_x_)) {
     ROS_ERROR("Can not find auto_linear_x");
@@ -50,10 +50,10 @@ StateMachine::StateMachine(ros::NodeHandle &nh)
   dbus_sub_ = nh.subscribe<rm_msgs::DbusData>("/dbus_data", 10,
                                               &StateMachine::dbusCB, this);
   left_radar_sub_ = nh.subscribe<rm_msgs::TofRadarData>(
-      "/controllers/tof_radar_controller/left_tof_radar/data", 10,
+      "/controllers/tof_radar_controller/left_tf_radar/data", 10,
       &StateMachine::leftRadarCB, this);
   right_radar_sub_ = nh.subscribe<rm_msgs::TofRadarData>(
-      "/controllers/tof_radar_controller/right_tof_radar/data", 10,
+      "/controllers/tof_radar_controller/right_tf_radar/data", 10,
       &StateMachine::rightRadarCB, this);
   controller_manager_.startStateControllers();
   context_.enterStartState();
@@ -74,7 +74,6 @@ void StateMachine::initRaw() {
                                                  -fsm_data_.dbus_data_.ch_l_y);
   upper_cmd_sender_->gimbal_cmd_sender_->setRate(-fsm_data_.dbus_data_.ch_l_x,
                                                  -fsm_data_.dbus_data_.ch_l_y);
-  lower_cmd_sender_->shooter_cmd_sender_->setMode(rm_msgs::ShootCmd::STOP);
 }
 
 void StateMachine::initCruise() { ROS_INFO("Enter Cruise"); }
@@ -85,7 +84,6 @@ void StateMachine::sendRawCommand(const ros::Time &time) {
   lower_cmd_sender_->gimbal_cmd_sender_->sendCommand(time);
   upper_cmd_sender_->gimbal_cmd_sender_->sendCommand(time);
   lower_cmd_sender_->shooter_cmd_sender_->sendCommand(time);
-  upper_cmd_sender_->shooter_cmd_sender_->sendCommand(time);
 }
 
 void StateMachine::sendCruiseCommand(const ros::Time &time) {
@@ -94,7 +92,6 @@ void StateMachine::sendCruiseCommand(const ros::Time &time) {
   lower_cmd_sender_->gimbal_cmd_sender_->sendCommand(time);
   upper_cmd_sender_->gimbal_cmd_sender_->sendCommand(time);
   lower_cmd_sender_->shooter_cmd_sender_->sendCommand(time);
-  upper_cmd_sender_->shooter_cmd_sender_->sendCommand(time);
 }
 
 void StateMachine::cruiseChassis() {
@@ -163,30 +160,30 @@ void StateMachine::setTrack(SideCommandSender *side_cmd_sender) {
 }
 
 void StateMachine::checkReferee(const ros::Time &time) {
-  if (fsm_data_.game_robot_status_.mains_power_chassis_output_ &&
+  if (fsm_data_.game_robot_status_.mains_power_chassis_output &&
       !chassis_output_) {
     ROS_INFO("Chassis output ON");
     chassisOutputOn();
   }
-  if (fsm_data_.game_robot_status_.mains_power_gimbal_output_ &&
+  if (fsm_data_.game_robot_status_.mains_power_gimbal_output &&
       !gimbal_output_) {
     ROS_INFO("Gimbal output ON");
     gimbalOutputOn();
   }
-  if (fsm_data_.game_robot_status_.mains_power_shooter_output_ &&
+  if (fsm_data_.game_robot_status_.mains_power_shooter_output &&
       !shooter_output_) {
     ROS_INFO("Shooter output ON");
     shooterOutputOn();
   }
-  if (fsm_data_.game_robot_status_.mains_power_chassis_output_)
+  if (fsm_data_.game_robot_status_.mains_power_chassis_output)
     chassis_output_ = true;
   else
     chassis_output_ = false;
-  if (fsm_data_.game_robot_status_.mains_power_gimbal_output_)
+  if (fsm_data_.game_robot_status_.mains_power_gimbal_output)
     gimbal_output_ = true;
   else
     gimbal_output_ = false;
-  if (fsm_data_.game_robot_status_.mains_power_shooter_output_)
+  if (fsm_data_.game_robot_status_.mains_power_shooter_output)
     shooter_output_ = true;
   else
     shooter_output_ = false;
@@ -205,22 +202,11 @@ void StateMachine::checkSwitch(const ros::Time &time) {
   }
 }
 
-void StateMachine::chassisOutputOn() {
-  ROS_INFO("Chassis output ON");
-  catapult_calibration_->reset();
-}
+void StateMachine::chassisOutputOn() { ROS_INFO("Chassis output ON"); }
 
-void StateMachine::gimbalOutputOn() {
-  ROS_INFO("Gimbal output ON");
-  lower_gimbal_calibration_->reset();
-  upper_gimbal_calibration_->reset();
-}
+void StateMachine::gimbalOutputOn() { ROS_INFO("Gimbal output ON"); }
 
-void StateMachine::shooterOutputOn() {
-  ROS_INFO("Shooter output ON");
-  lower_trigger_calibration_->reset();
-  upper_trigger_calibration_->reset();
-}
+void StateMachine::shooterOutputOn() { ROS_INFO("Shooter output ON"); }
 
 void StateMachine::remoteControlTurnOff() {
   controller_manager_.stopMainControllers();
@@ -229,6 +215,9 @@ void StateMachine::remoteControlTurnOff() {
 
 void StateMachine::remoteControlTurnOn() {
   controller_manager_.startMainControllers();
+  lower_trigger_calibration_->reset();
+  upper_trigger_calibration_->reset();
+  lower_gimbal_calibration_->reset();
 }
 
 void StateMachine::cruiseRun() {

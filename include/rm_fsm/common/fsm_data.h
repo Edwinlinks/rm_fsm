@@ -60,7 +60,6 @@ public:
   ros::Subscriber lower_gimbal_des_error_sub_, upper_gimbal_des_error_sub_;
   double pos_x_{};
   double lower_yaw_{}, lower_pitch_{}, upper_yaw_{}, upper_pitch_{};
-  tf2_ros::Buffer tf_buffer_;
   rm_msgs::TrackData lower_track_data_, upper_track_data_;
   rm_msgs::GimbalDesError lower_gimbal_des_error_, upper_gimbal_des_error_;
   rm_common::Referee referee_;
@@ -95,15 +94,15 @@ class SideCommandSender {
 public:
   SideCommandSender(ros::NodeHandle &nh, rm_common::RefereeData &referee_data,
                     rm_msgs::GimbalDesError &gimbal_des_error, double &pos_yaw,
-                    double &pos_pitch)
+                    double &pos_pitch, rm_msgs::TrackData &track_data)
       : gimbal_des_error_(gimbal_des_error), pos_yaw_(pos_yaw),
         pos_pitch_(pos_pitch) {
     ros::NodeHandle gimbal_nh(nh, "gimbal");
     gimbal_cmd_sender_ =
         new rm_common::GimbalCommandSender(gimbal_nh, referee_data);
     ros::NodeHandle shooter_nh(nh, "shooter");
-    shooter_cmd_sender_ =
-        new rm_common::ShooterCommandSender(shooter_nh, referee_data);
+    shooter_cmd_sender_ = new rm_common::ShooterCommandSender(
+        shooter_nh, referee_data, track_data);
     ros::NodeHandle auto_nh(nh, "auto");
     XmlRpc::XmlRpcValue pitch_value, yaw_value;
     try {

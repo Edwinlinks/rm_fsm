@@ -169,7 +169,7 @@ Temporary Items
 
 # End of https://www.gitignore.io/api/c++,linux,macos,clion
 
-/state_machine/*.cpp
-/state_machine/*.h
-/state_machine/*.dot
-/state_machine/*.png
+rm_fsm/state_machine/*.cpp
+rm_fsm/state_machine/*.h
+rm_fsm/state_machine/*.dot
+rm_fsm/state_machine/*.png

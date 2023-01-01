@@ -1,0 +1,11 @@
+<launch>
+    <node pkg="tf" type="static_transform_publisher" name="map_world_broadcaster" args="0 0 0 0 0 0 map odom 100"/>
+
+    <node name="octomap_server" pkg="octomap_server" type="octomap_server_node">
+        <remap from="cloud_in" to="/oak_left/depth/color/points"/>
+        <param name="frame_id" type="string" value="odom"/>
+        <param name="latch" value="false"/>
+        <param name="resolution" value="0.05"/>
+        <remap from="projected_map" to="map"/>
+    </node>
+</launch>

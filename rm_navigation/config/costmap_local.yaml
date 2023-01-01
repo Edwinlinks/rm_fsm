@@ -1,0 +1,8 @@
+global_frame: odom
+rolling_window: true
+width: 3
+height: 3
+
+plugins:
+  - { name: obstacles_camera,           type: "costmap_2d::ObstacleLayer" }
+  - { name: inflation,                 type: "costmap_2d::InflationLayer" }

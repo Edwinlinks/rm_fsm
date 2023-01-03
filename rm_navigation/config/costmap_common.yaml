@@ -18,7 +18,7 @@ static:
 
 obstacles_camera:
   observation_sources: point_cloud
-  point_cloud: { data_type: PointCloud2, clearing: true, marking: true, topic: octomap_point_cloud_centers, inf_is_valid: true }
+  point_cloud: { data_type: PointCloud2, clearing: true, marking: true, topic: cutoff/output, inf_is_valid: true }
 
 inflation:
   inflation_radius: 1.0

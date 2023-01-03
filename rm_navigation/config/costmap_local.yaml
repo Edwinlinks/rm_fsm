@@ -1,5 +1,6 @@
 global_frame: odom
 rolling_window: true
+inflation_radius: 0.5
 width: 3
 height: 3
 

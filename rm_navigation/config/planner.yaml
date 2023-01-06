@@ -1,6 +1,7 @@
 controller_frequency: 5.0
 recovery_behaviour_enabled: true
-
+oscillation_timeout: 10.0
+oscillation_distance: 0.2
 
 GlobalPlanner:
   allow_unknown: false
@@ -55,9 +56,8 @@ TebLocalPlannerROS:
   min_obstacle_dist: 0.4 # This value must also include our robot radius, since footprint_model is set to "point".
   inflation_dist: 0.6
   include_costmap_obstacles: True
-  costmap_obstacles_behind_robot_dist: 1.0
+  costmap_obstacles_behind_robot_dist: 0.1
   obstacle_poses_affected: 15
-  costmap_converter_plugin: "costmap_converter::CostmapToLinesDBSRANSAC"
   costmap_converter_spin_thread: True
   costmap_converter_rate: 5
 

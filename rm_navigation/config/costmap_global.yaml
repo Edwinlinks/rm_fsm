@@ -1,4 +1,6 @@
-global_frame: odom
+global_frame: map
+update_frequency: 1.0
+publish_frequency: 3.0
 rolling_window: true
 track_unknown_space: true
 

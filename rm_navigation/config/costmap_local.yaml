@@ -1,6 +1,7 @@
 global_frame: odom
 rolling_window: true
-inflation_radius: 0.5
+update_frequency: 2.0
+publish_frequency: 4.0
 width: 3
 height: 3
 

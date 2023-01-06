@@ -1,6 +1,19 @@
 controller_frequency: 5.0
 recovery_behaviour_enabled: true
 
+
+GlobalPlanner:
+  allow_unknown: false
+  default_tolerance: 0.3
+  use_dijkstra: true
+  use_quadratic: true
+  use_grid_path: false
+  lethal_cost: 253
+  neutral_cost: 66
+  cost_factor: 0.5
+  publish_potential: True
+
+
 TebLocalPlannerROS:
   odom_topic: odom
   map_frame: map

@@ -2,8 +2,8 @@ global_frame: odom
 rolling_window: true
 update_frequency: 2.0
 publish_frequency: 4.0
-width: 3
-height: 3
+width: 3.0
+height: 3.0
 
 plugins:
   - { name: obstacles_camera,           type: "costmap_2d::ObstacleLayer" }

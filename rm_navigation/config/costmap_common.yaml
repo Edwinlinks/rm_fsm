@@ -10,11 +10,15 @@ obstacle_range: 2.0
 raytrace_range: 3.0
 
 #layer definitions
-static:
+static_global:
   map_topic: map
   subscribe_to_updates: true
 
+static_local:
+  enabled: true
+
 obstacles_camera:
+  track_unknown_space: true
   observation_sources: point_cloud
   point_cloud: { data_type: PointCloud2, clearing: true, marking: true, topic: cutoff/output, inf_is_valid: true }
 

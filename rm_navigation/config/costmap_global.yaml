@@ -5,5 +5,5 @@ rolling_window: true
 track_unknown_space: true
 
 plugins:
-  - { name: static,           type: "costmap_2d::ObstacleLayer" }
+  - { name: static_global,           type: "costmap_2d::ObstacleLayer" }
   - { name: inflation,                 type: "costmap_2d::InflationLayer" }

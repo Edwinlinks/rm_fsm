@@ -6,5 +6,6 @@ width: 3.0
 height: 3.0
 
 plugins:
+  - { name: static_local, type: "costmap_2d::StaticLayer" }
   - { name: obstacles_camera,           type: "costmap_2d::ObstacleLayer" }
   - { name: inflation,                 type: "costmap_2d::InflationLayer" }

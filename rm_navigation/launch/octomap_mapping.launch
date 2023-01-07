@@ -3,9 +3,9 @@
 
     <node name="octomap_server" pkg="octomap_server" type="octomap_server_node">
         <remap from="cloud_in" to="/oak_left/depth/color/points"/>
-        <param name="frame_id" type="string" value="odom"/>
+        <param name="frame_id" type="string" value="map"/>
+        <param name="base_frame_id" type="string" value="base_link"/>
         <param name="latch" value="false"/>
         <param name="resolution" value="0.05"/>
-        <remap from="projected_map" to="map"/>
     </node>
 </launch>

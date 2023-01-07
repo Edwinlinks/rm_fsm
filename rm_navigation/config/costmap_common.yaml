@@ -19,4 +19,5 @@ obstacles_camera:
   point_cloud: { data_type: PointCloud2, clearing: true, marking: true, topic: cutoff/output, inf_is_valid: true }
 
 inflation:
+  cost_scaling_factor: 5.0
   inflation_radius: 0.5

@@ -1,10 +1,5 @@
-controller_frequency: 5.0
-recovery_behaviour_enabled: true
-oscillation_timeout: 10.0
-oscillation_distance: 0.2
-
 GlobalPlanner:
-  allow_unknown: false
+  allow_unknown: true
   default_tolerance: 0.3
   use_dijkstra: true
   use_quadratic: true
@@ -13,7 +8,6 @@ GlobalPlanner:
   neutral_cost: 66
   cost_factor: 0.5
   publish_potential: True
-
 
 TebLocalPlannerROS:
   odom_topic: odom

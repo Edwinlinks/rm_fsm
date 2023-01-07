@@ -16,6 +16,7 @@ static_global:
 
 static_local:
   enabled: true
+  track_unknown_space: true
 
 obstacles_camera:
   track_unknown_space: true

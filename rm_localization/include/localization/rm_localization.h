@@ -2,8 +2,7 @@
 // Created by luotinkai on 2022/11/3.
 //
 
-#pragma
-
+#pragma once
 #include <apriltag_ros/AprilTagDetectionArray.h>
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
@@ -15,6 +14,7 @@
 
 #include <rm_common/filters/filters.h>
 #include <rm_common/ori_tool.h>
+#include <rm_common/ros_utilities.h>
 
 class RmLocalization {
 public:
@@ -30,7 +30,7 @@ private:
   MovingAverageFilter<double> *filter_x_, *filter_y_, *filter_yaw_x_,
       *filter_yaw_y_;
 
-  ros::Subscriber tag_sub_;
+  ros::Subscriber detetion_sub_;
   tf2_ros::Buffer tf_buffer_;
   tf2_ros::TransformBroadcaster tf_broadcaster_;
 };

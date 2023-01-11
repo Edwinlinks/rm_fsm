@@ -35,8 +35,8 @@ catkin_package(
         apriltag_ros
 )
 
-add_executable(tags_test src/tags_distribution/tags_distribute_node.cpp)
-target_link_libraries(tags_test ${catkin_LIBRARIES})
+add_executable(tags_distribute src/tags_distribution/tags_distribute_node.cpp)
+target_link_libraries(tags_distribute ${catkin_LIBRARIES})
 
 #rm_localization
 add_executable(rm_localization src/localization/rm_local_node.cpp src/localization/rm_localization.cpp)

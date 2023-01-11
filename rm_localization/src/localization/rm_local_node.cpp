@@ -6,7 +6,6 @@
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "rm_localization");
-  ros::NodeHandle nh;
   RmLocalization rm_localization;
   ros::Rate loop_rate(100);
   while (ros::ok()) {

@@ -1,0 +1,27 @@
+<launch>
+    <arg name="launch_prefix" default=""/>
+    <arg name="node_namespace" default="apriltag_ros_continuous_node"/>
+    <arg name="camera_frame" default="camera_optical_frame"/>
+
+    <rosparam command="load" file="$(find rm_config)/config/handeye/settings.yaml" ns="$(arg node_namespace)"/>
+    <rosparam command="load" file="$(find rm_config)/config/handeye/tags.yaml" ns="$(arg node_namespace)"/>
+    <rosparam command="load" file="$(find rm_localization)/config/tags_distribute.yaml"/>
+
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node"
+          name="apriltag_ros_continuous_node" output="log"
+          clear_params="true">
+        <remap from="image_rect" to="/hk_camera/image_raw"/>
+        <remap from="camera_info" to="/hk_camera/camera_info"/>
+        <param name="publish_tag_detections_image" type="bool" value="true"/>      <!-- default: false -->
+        <param name="publish_tf" type="bool" value="true"/>
+        <param name="camera_frame" type="string" value="$(arg camera_frame)"/>
+    </node>
+
+    <node name="tags_distribute" pkg="rm_localization" type="tags_distribute">
+    </node>
+
+    <node name="rm_localization" pkg="rm_localization" type="rm_localization">
+        <param name="camera_frame" type="str" value="camera_optical_frame"/>
+    </node>
+
+</launch>
